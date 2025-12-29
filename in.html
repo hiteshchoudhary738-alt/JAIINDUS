@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAI INDUSTRIES</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-text">
+            <h1>JAI INDUSTRIES WELCOMES U</h1>
+            <p>PRIME MINISTER'S ROOFTOP SCHEME REGISTRATION FORM</p>
+        </div>
+    </div>
+    <form action="https://formspree.io/f/xqekdreq" method="POST" onsubmit="handleSubmit(event)">
+        
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
+ <label for="fathername">Father's Name:</label>
+            <input type="text" id="fathername" name="fathername" required><br><br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required><br><br>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required><br><br>
+<label for="gender">Gender:</label>
+<input type="radio" id="male" name="gender" value="male">
+<label for="male">Male</label>
+<input type="radio" id="female" name="gender" value="female">
+<label for="female">Female</label>
+<input type="radio" id="other" name="gender" value="other">
+<label for="other">Other</label><br><br>
+<label for="electricity-bill">Electricity Bill:</label>
+<input type="number" id="electricity-bill" name="electricity-bill" requiured><br><br>
+
+<div class="container">
+        <label for="stateSelect">Select State:</label>
+        <select id="stateSelect" onchange="updateDistricts()">
+            <option value="">-- Select State --</option>
+           
+            <option value="Gujarat">Gujarat</option>
+            <option value="Rajasthan">Rajasthan</option>
+        </select>
+    </div>
+<br>
+    <div class="container">
+        <label for="districtSelect">Select District:</label>
+        <select id="districtSelect">
+            <option value="">-- Select State First --</option>
+        </select>
+    </div>
+
+    <script>
+        // 1. THE DATA: Map states to their specific districts
+        const stateData = {
+            
+            "Gujarat": ["Palanpur", "Sidhpur", "Maehsana"],
+            "Rajasthan": ["Jaipur", "Udaipur", "Jodhpur", "Kota", "Pali", "Sirohi", "Rajsamand", "Ajmer"]
+        };
+
+        function updateDistricts() {
+            // Get the HTML elements
+            const stateSelect = document.getElementById("stateSelect");
+            const districtSelect = document.getElementById("districtSelect");
+
+            // Get the currently selected state value (e.g., "Gujarat")
+            const selectedState = stateSelect.value;
+
+            // Clear existing options in the District dropdown
+            districtSelect.innerHTML = "";
+
+            // Check if a valid state is selected
+            if (selectedState !== "") {
+                
+                // Get the list of districts for that state from our data object
+                const districts = stateData[selectedState];
+
+                // Create the default "Select District" option
+                let defaultOption = document.createElement("option");
+                defaultOption.text = "-- Select District --";
+                defaultOption.value = "";
+                districtSelect.add(defaultOption);
+
+                // Loop through the districts and add them as options
+                districts.forEach(function(district) {
+                    let newOption = document.createElement("option");
+                    newOption.text = district;
+                    newOption.value = district;
+                    districtSelect.add(newOption);
+                });
+
+            } else {
+                // If no state is selected (user picked the default top option), reset district
+                let defaultOption = document.createElement("option");
+                defaultOption.text = "-- Select State First --";
+                districtSelect.add(defaultOption);
+            }
+        }
+    </script>
+
+<h3>Upload Required Documents:</h3>
+<label for="idProof">ID Proof:</label>
+<input type="file" id="idProof" name="idProof" accept=".pdf,.jpg,.png" required><br><br>
+<label for="electricitybill">Electricity Bill:</label>    
+<input type="file" id="electricitybill" name="electricitybill" accept=".pdf,.jpg,.png" required><br><br>
+<label for="">
+
+
+
+
+
+
+
+
+<input type="hidden" name="submission_time" id="timeBox">
+            <button type="submit">Submit</button>
+        <script 
+    > alert("JAI INDUSTRIES" );
+            </script>
+            <script src="index.js"></script>
+</body>
+</html>

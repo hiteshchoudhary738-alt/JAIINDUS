@@ -1,0 +1,110 @@
+
+
+
+
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 36px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 20px;
+    border-width: 100px;
+    border-color:dashed;
+   
+}
+
+
+/* Add padding to the body equal to the header's height */
+
+  
+h4 {
+    font-family: 'Arial', sans-serif;
+    font-size: 25px;
+    color: #ffffff;
+    text-align: center;
+    
+}
+form {
+    
+    background-color: rgba(255, 255, 255, 0.368);
+}
+h2{
+    font-family: 'Arial', sans-serif;
+    font-size: 30px;
+    color: #ffffff;
+    text-align: center;
+}
+aside 
+{
+    font-family: 'Arial', sans-serif;
+    text-align: right;
+}
+button {
+    font-size: 20px;
+    color: #000000;
+    background-color: #ffffff;
+    text-align: center;
+ 
+    border:10px;
+    
+} 
+html {
+        border: 0;       
+           margin: 0;
+            background-color: grey;
+            font-family: Arial, sans-serif;
+        }
+
+.hero-section {
+            /* 1. Set the background image */
+            /* Replace the URL below with your own image filename */
+            background-image: url('Screenshot 2025-12-28 132744.png'); 
+            
+            
+            /* 2. Make the image cover the whole area nicely */
+            height: 500px; 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            /* 3. Center the text on top of the image */
+            display: flex;
+            justify-content: center; /* Horizontally center */
+            align-items: center;     /* Vertically center */
+            flex-direction: column;
+            gap: 20px;
+            /* Optional: Add a dark tint so text is readable */
+            background-color: rgba(0, 0, 0, 0.5); 
+            background-blend-mode: overlay;
+        }
+
+        /* Styling the heading text */
+        .hero-text {
+            text-align: center;
+            color: white;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px #000000; /* Adds a shadow to make text pop */
+        }
+    
+.id1 {
+    font-size: 20px;
+    color: #ffffff;
+    margin: 10px ;
+    
+    
+}
+.id2 {
+    font-size: 20px;
+    color: #ffffff;
+    margin: 10px ;
+    
+}
+button {
+    cursor: pointer;
+    text-align: center;
+    box-align: center;
+    margin: 50%;
+
+}
+
+
