@@ -1,126 +1,113 @@
-const FORMSPREE_URL = "https://formspree.io/f/xqekdreq"; // Paste your code here
+// --- START OF CLEAN CODE ---
 
-// 2. MAIN FUNCTION
-async function handleSubmit(event) {
-    event.preventDefault(); // Stop page from reloading
+const FORMSPREE_URL = "https://formspree.io/f/xqekdreq";
+
+// 1. WAIT FOR PAGE TO LOAD (Prevents crashes)
+document.addEventListener("DOMContentLoaded", function() {
     
-    const status = document.getElementById("formStatus");
+    // Connect to the form
     const form = document.getElementById("contactForm");
-    const submitBtn = document.getElementById("submitBtn");
+    
+    // Restore data if the user is returning
+    restoreData();
 
-    // UI: Show loading state
-    submitBtn.disabled = true;
-    status.innerText = "Sending data...";
+    // Attach the submit listener safely
+    if (form) {
+        form.addEventListener("submit", handleSubmit);
+    } else {
+        console.error("ERROR: Could not find <form id='contactForm'> in your HTML.");
+    }
+});
 
-    // A. PREPARE DATA
-    const formData = new FormData(form);
-    const userData = Object.fromEntries(formData.entries()); // Converts form to clean JSON object
+// 2. MAIN SUBMIT FUNCTION
+async function handleSubmit(event) {
+    event.preventDefault(); // Stop reload
+    
+    const form = event.target;
+    const status = document.getElementById("formStatus");
+    // Find button safely (works even if ID is missing)
+    const submitBtn = form.querySelector("button[type='submit']");
 
-    // B. SAVE TO LOCAL STORAGE (Backup)
-    try {
-        localStorage.setItem("userBackup", JSON.stringify(userData));
-        console.log("Backup saved to Local Storage.");
-    } catch (e) {
-        console.warn("Could not save to local storage", e);
+    // UI: Lock button & show loading
+    if(submitBtn) submitBtn.disabled = true;
+    if(status) {
+        status.innerText = "Sending data...";
+        status.style.color = "black";
     }
 
-    // C. SEND TO FORMSPREE (The Email)
+    // A. PREPARE DATA (Safe way - handles Gender automatically)
+    const formData = new FormData(form);
+    formData.append("submission_time", new Date().toString());
+
+    // B. SAVE BACKUP (Text only)
     try {
-        const response = await fetch(FORMSPREE_URL="https://formspree.io/f/xqekdreq", {
+        const objectData = Object.fromEntries(formData.entries());
+        localStorage.setItem("userBackup", JSON.stringify(objectData));
+    } catch (e) {
+        console.warn("Backup warning:", e);
+    }
+
+    // C. SEND TO FORMSPREE
+    try {
+        const response = await fetch(FORMSPREE_URL, {
             method: "POST",
             body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         });
 
         if (response.ok) {
-            status.innerText = "Success! Data sent and saved.";
-            status.style.color = "green";
-            form.reset(); // Clear the inputs
+            if(status) {
+                status.innerText = "Success! Form sent.";
+                status.style.color = "green";
+            }
+            form.reset(); // Clear inputs
+            localStorage.removeItem("userBackup"); // Clear backup
         } else {
-            // If Formspree has an error (like a wrong email)
             const data = await response.json();
             if (Object.hasOwn(data, 'errors')) {
-                status.innerText = data["errors"].map(error => error["message"]).join(", ");
+                if(status) status.innerText = data["errors"].map(e => e["message"]).join(", ");
             } else {
-                status.innerText = "Oops! There was a problem submitting your form.";
+                if(status) status.innerText = "Error submitting form.";
             }
-            status.style.color = "red";
+            if(status) status.style.color = "red";
         }
     } catch (error) {
-        status.innerText = "Network error. Please try again.";
-        status.style.color = "red";
+        if(status) {
+            status.innerText = "Network error. Please try again.";
+            status.style.color = "red";
+        }
     }
 
-    // UI: Re-enable button
-    submitBtn.disabled = false;
+    // UI: Unlock button
+    if(submitBtn) submitBtn.disabled = false;
 }
 
-// 3. EVENT LISTENER
-// This waits for the DOM to load before attaching the listener
-document.getElementById("contactForm").addEventListener("submit", handleSubmit);
-var timeBox = document.getElementById("timeBox");
-
-// Fill it with the user's local time string
-// Example result: "Mon Dec 29 2025 02:00:00 GMT+0530 (India Standard Time)"
-timeBox.value = new Date().toString();
-    // 2. GET the data from the HTML
-    var nameValue = document.getElementById("name").value;
-    var fatherValue = document.getElementById("fathername").value;
-    var emailValue = document.getElementById("email").value;
-var addressValue = document.getElementById("address").value;
-    var phoneValue = document.getElementById("phone").value;
-    var genderValue = document.querySelector("input[name='gender']:checked").value;
-    var stateValue = document.getElementById("stateSelect").value;
-    var districtValue = document.getElementById("districtSelect").value;
-    var electricityBillValue = document.getElementById("electricitybill").value;
-    var idProofValue = document.getElementById("idProof").value;
-    var electricityBillFileValue = document.getElementById("electricitybill").value;
-    
-    // 3. STORE the data in an Object (A digital package)
-    var userData = {
-        name: nameValue,
-        father_name: fatherValue,
-        email: emailValue,
-        address: addressValue,
-        phonenumber: phoneValue,    
-        gender: genderValue,
-        state: stateValue,
-        district: districtValue,
-        electricity_bill: electricityBillValue,
-        id_proof: idProofValue,
-        electricity_bill_file: electricityBillFileValue,
-        
-        submission_date: new Date().toLocaleDateString()
-    };
-
-    // 4. USE the data (For now, we print it to the Console)
-    localStorage.setItem("mySavedUser", JSON.stringify(userData));
-
-    // 4. Confirm it worked
-    alert("Data Saved Successfully!");
-    console.log("Saved to browser memory:", userData);
-
-window.onload = function() {
-    var savedData = localStorage.getItem("mySavedUser");
-    
+// 3. RESTORE FUNCTION (Safe version)
+function restoreData() {
+    const savedData = localStorage.getItem("userBackup");
     if (savedData) {
-        // Turn the text back into an Object
-        var user = JSON.parse(savedData);
-        
-        // Put the values back into the boxes
-        document.getElementById("Name").value = user.name;
-        document.getElementById("fatherName").value = user.father_name;
-        document.getElementById("Email").value = user.email;
-        document.getElementById("Address").value = user.address;
-        document.getElementById("Phone").value = user.phonenumber;
-        document.getElementById("stateSelect").value = user.state;
-        document.getElementById("districtSelect").value = user.district;
-        document.getElementById("electricityBill").value = user.electricity_bill;
-        document.getElementById("idProof").value = user.id_proof;
-        document.getElementById("electricitybill").value = user.electricity_bill_file;
+        try {
+            const user = JSON.parse(savedData);
+            
+            // Helper to fill boxes safely
+            const setValue = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val) el.value = val;
+            };
 
-        alert("Welcome back, " + user.name + "! I restored your data.");
+            // IDs must match your HTML exactly
+            setValue("name", user.name);
+            setValue("fathername", user.fathername); // check HTML ID
+            setValue("email", user.email);
+            setValue("address", user.address);
+            setValue("phone", user.phone);
+            setValue("age", user.age);
+            setValue("electricity-bill-amount", user.electricity_bill_amount); // check HTML ID
+            
+            console.log("Restored data from backup.");
+        } catch (e) {
+            console.error("Restoring failed", e);
+        }
     }
-};
+}
+
