@@ -1,4 +1,3 @@
-// 1. CONFIGURATION
 const FORMSPREE_URL = "https://formspree.io/f/xqekdreq"; // Paste your code here
 
 // 2. MAIN FUNCTION
