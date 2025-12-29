@@ -102,7 +102,7 @@ function restoreData() {
             setValue("address", user.address);
             setValue("phone", user.phone);
             setValue("age", user.age);
-            setValue("electricity-bill-amount", user.electricity_bill_amount); // check HTML ID
+            setValue("electricity-bill", user.electricity_bill); // check HTML ID
             
             console.log("Restored data from backup.");
         } catch (e) {
@@ -110,4 +110,5 @@ function restoreData() {
         }
     }
 }
+
 
